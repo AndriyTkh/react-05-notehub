@@ -8,9 +8,10 @@ import css from './NoteList.module.css';
 interface NoteListProps {
   search: string;
   page: number;
+  setPageCount: (selected: number) => void;
 }
 
-export default function NoteList({ search, page }: NoteListProps) {
+export default function NoteList({ search, page, setPageCount }: NoteListProps) {
   const queryClient = useQueryClient();
 
   const params: FetchNotesParams = { search, page, perPage: 12 };
@@ -32,6 +33,8 @@ export default function NoteList({ search, page }: NoteListProps) {
   if (error) return <p>Error loading notes</p>;
 
   if (!data || data.notes.length === 0) return <p>No notes found</p>;
+
+  setPageCount(data.totalPages)
 
   return (
     <ul className={css.list}>
